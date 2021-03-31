@@ -35,3 +35,45 @@ scatter+geom_point()+labs(x="Vehicle Miles Traveled", y="Highway Gallons of Fuel
 # Robust regression is an alternative to least squares regression when data are 
 # contaminated with outliers or influential observations, and it can also be used
 # for the purpose of detecting influential observations.
+
+#Robust regression with 99% confidence interval
+scatter+geom_point()+labs(x="Vehicle Miles Traveled", y="Highway Gallons of Fuel")+
+  geom_smooth(method="rlm", colour="Blue", level=0.99, alpha=0.1, fill="Cyan")
+
+#Robust regression with 99% confidence interval
+scatter2<-ggplot(dataset, aes(DVMT, HGF))
+scatter2+geom_point()+labs(x="Daily Vehicle Miles Traveled", y="Highway Gallons of Fuel")+
+  geom_smooth(method="rlm", colour="Blue", level=0.99, alpha=0.1, fill="Cyan")
+
+# Fitting linear Regression for VMT vs HGF
+
+regressor<-lm(formula=HGF~ VMT, data<-dataset) 
+
+#Summary table
+summary(regressor)
+
+# Call:
+#   lm(formula = HGF ~ VMT, data = data <- dataset)
+# 
+# Residuals:
+#   Min         1Q     Median         3Q        Max 
+# -194551021 -112049952  -14316203  136858930  263447125 
+# 
+# Coefficients:
+#   Estimate Std. Error t value Pr(>|t|)    
+# (Intercept) 3.897e+09  1.854e+08   21.02 1.38e-15 ***
+#   VMT         2.304e-02  1.033e-03   22.30 4.20e-16 ***
+#   ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 148600000 on 21 degrees of freedom
+# Multiple R-squared:  0.9595,	Adjusted R-squared:  0.9576 
+# F-statistic: 497.4 on 1 and 21 DF,  p-value: 4.198e-16
+
+#Residuals Analysis Plots
+library(lindia)
+gg_diagnose(regressor)
+gg_resX(regressor)
+library(olsrr)
+ols_test_normality(regressor)
+ols_plot_resid_hist(regressor)
